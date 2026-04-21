@@ -14,13 +14,15 @@ Your task is to provide dietary guidance for someone experiencing the following 
 
 Condition: "${condition}"
 Diet Preference: ${dietPreference}
-Target Language: ${language} (However, output the main JSON structure keys in English)
+Target Language Code: "${language}"
 
 CRITICAL INSTRUCTIONS:
 1. Suggest common foods, including specifically Indian household remedies/meals.
 2. Must strictly align with the requested diet preference (No meat if veg).
-3. Do NOT make medical or diagnostic claims. Use phrases like "traditionally helpful for" or "easy to digest".
-4. You MUST Return exactly the following JSON structure and nothing else. No markdown wrapping. Just pure JSON data:
+3. Do NOT make medical or diagnostic claims.
+4. TRANSLATION: You MUST write the actual array contents and string values (title, foods, tips, reason) in the requested Target Language Code (Translate to Hindi script for "hi", Telugu script for "te", English for "en").
+5. Only the JSON structural keys (title, eat, avoid, tips, reason, regional, te, hi) must remain in English.
+6. You MUST Return exactly the following JSON structure and nothing else. No markdown wrapping. Just pure JSON data:
 {
   "title": "<A sympathetic title>",
   "eat": ["<food 1>", "<food 2>"],

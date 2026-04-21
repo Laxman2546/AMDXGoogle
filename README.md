@@ -1,6 +1,6 @@
 # AMDXGoogle
 
-A monolithic repository housing the complete AI Food Assistant architecture.
+A monolithic repository housing the complete NutriMind architecture.
 
 ## Structure
 

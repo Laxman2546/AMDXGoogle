@@ -11,7 +11,7 @@ function App() {
     <div className={styles.appContainer}>
       <header className={styles.header}>
         <div className={styles.logo}>
-          <Link to="/">AI Food Assistant</Link>
+          <Link to="/">NutriMind</Link>
         </div>
         <nav className={styles.nav}>
           <Link to="/">Home</Link>
@@ -28,7 +28,7 @@ function App() {
       </main>
 
       <footer className={styles.footer}>
-        <p>&copy; {new Date().getFullYear()} AI Food Assistant</p>
+        <p>&copy; {new Date().getFullYear()} NutriMind</p>
       </footer>
     </div>
   );

@@ -9,7 +9,7 @@ const HomePage = () => {
   return (
     <div className={styles.container}>
       <header className={styles.hero}>
-        <h1 className={styles.title}>Welcome to your AI Food Assistant</h1>
+        <h1 className={styles.title}>Welcome to NutriMind</h1>
         <p className={styles.subtitle}>Choose an option below to get personalized nutritional guidance.</p>
       </header>
 
