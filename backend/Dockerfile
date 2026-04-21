@@ -1,13 +1,13 @@
 # ---- Build Stage ----
-FROM node:20-alpine AS builder
+FROM node:18-alpine AS builder
 
 WORKDIR /app
 
-COPY package*.json ./
+COPY package.json package-lock.json ./
 RUN npm ci --only=production
 
 # ---- Production Stage ----
-FROM node:20-alpine
+FROM node:18-alpine
 
 # Security: run as non-root
 RUN addgroup -S appgroup && adduser -S appuser -G appgroup
@@ -16,7 +16,7 @@ WORKDIR /app
 
 # Copy production dependencies from builder
 COPY --from=builder /app/node_modules ./node_modules
-COPY package*.json ./
+COPY package.json package-lock.json ./
 COPY src ./src
 
 # Set ownership
@@ -26,9 +26,7 @@ USER appuser
 
 # Cloud Run injects PORT env var (default 8080)
 ENV NODE_ENV=production
-ENV PORT=8080
-
 EXPOSE 8080
 
 # Cloud Run sends SIGTERM on shutdown — Node handles it in index.js
-CMD ["node", "src/index.js"]
+CMD ["npm", "start"]

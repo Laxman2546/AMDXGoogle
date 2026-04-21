@@ -3,7 +3,6 @@ import textModel from './ai/geminiClient.js';
 import { buildGuidancePrompt } from './ai/promptBuilder.js';
 import { guidanceResponseSchema } from '../schemas/guidance.schema.js';
 import logger from '../utils/logger.js';
-import { ApiError } from '../utils/ApiError.js';
 
 export const guidanceService = {
   /**
@@ -16,23 +15,26 @@ export const guidanceService = {
    * @returns {Promise<import('../schemas/guidance.schema.js').GuidanceResponse>}
    */
   async generateConditionGuidance({ condition, dietPreference, language }) {
-    // 1. Generate cache key (sanitized)
     const sanitizedCondition = condition.toLowerCase().trim().replace(/[^a-z0-9]/g, '-');
     const cacheKey = `${sanitizedCondition}_${dietPreference}_${language}`;
 
     try {
-      // 2. Check Firestore cache
-      const cacheRef = collections.guidanceCache.doc(cacheKey);
-      const doc = await cacheRef.get();
-
-      if (doc.exists) {
-        logger.info(`Cache hit for condition: ${condition} [${cacheKey}]`);
-        return doc.data();
+      // 1. Check Firestore cache (only if available)
+      if (collections.guidanceCache) {
+        try {
+          const doc = await collections.guidanceCache.doc(cacheKey).get();
+          if (doc.exists) {
+            logger.info(`Cache hit for condition: ${condition} [${cacheKey}]`);
+            return doc.data();
+          }
+        } catch (cacheErr) {
+          logger.warn(`Firestore read failed, skipping cache: ${cacheErr.message}`);
+        }
       }
 
-      logger.info(`Cache miss for condition: ${condition} [${cacheKey}]. Pinging Gemini...`);
+      logger.info(`Generating guidance for: ${condition} [${cacheKey}]`);
 
-      // 3. Build prompt and call Vertex AI
+      // 2. Build prompt and call Gemini
       const prompt = buildGuidancePrompt({ condition, dietPreference, language });
       const request = {
         contents: [{ role: 'user', parts: [{ text: prompt }] }],
@@ -45,36 +47,34 @@ export const guidanceService = {
         throw new Error('No valid response from Gemini model.');
       }
 
-      // 4. Parse and Validate Response via Zod
-      // Fallback cleanup if the model still wraps JSON in markdown blocks despite native JSON setting
+      // 3. Parse and validate
       const cleanJsonStr = responseText.replace(/^```json\s*/, '').replace(/\s*```$/, '').trim();
       const rawJson = JSON.parse(cleanJsonStr);
-      
       const validatedData = guidanceResponseSchema.parse(rawJson);
 
-      // 5. Cache the successful result asynchronously (fire & proceed)
-      cacheRef.set(validatedData).catch((err) => {
-        logger.error(`Failed to cache response for ${cacheKey}`, { error: err.message });
-      });
+      // 4. Cache result if Firestore is available
+      if (collections.guidanceCache) {
+        collections.guidanceCache.doc(cacheKey).set(validatedData).catch((err) => {
+          logger.warn(`Cache write failed for ${cacheKey}: ${err.message}`);
+        });
+      }
 
       return validatedData;
 
     } catch (error) {
-      logger.error('Error generating condition guidance', { 
-        error: error.message, 
+      logger.error('Error generating condition guidance', {
+        error: error.message,
         stack: error.stack,
-        condition 
+        condition,
       });
 
-      // 6. Graceful Degradation / Fallback logic
       return getFallbackGuidance(condition);
     }
   },
 };
 
 /**
- * Basic hardcoded fallback if AI/Database fails to ensure the API never drops
- * a crucial request completely.
+ * Safe fallback if AI or database fails.
  */
 function getFallbackGuidance(condition) {
   return {

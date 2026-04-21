@@ -19,7 +19,7 @@ const ai = new GoogleGenAI(clientConfig);
 const textModel = {
   async generateContent(request) {
     const response = await ai.models.generateContent({
-      model: 'gemini-1.5-flash-001',
+      model: 'gemini-2.5-flash-lite',
       contents: request.contents,
       config: {
         temperature: 0.2,

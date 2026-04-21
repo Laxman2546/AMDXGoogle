@@ -1,20 +1,11 @@
-import admin from 'firebase-admin';
-
-// Initialize Firebase Admin App
-// Cloud Run automatically provides default credentials,
-// so initializing without args uses the attached service account.
-// Locally, it uses GOOGLE_APPLICATION_CREDENTIALS if set.
-if (!admin.apps.length) {
-  admin.initializeApp();
-}
-
 /**
- * Access to Firestore instance.
- * @type {FirebaseFirestore.Firestore}
+ * Firestore caching is disabled until GCP credentials are configured.
+ * This module exports null placeholders so the rest of the app
+ * can safely check `if (collections.guidanceCache)` without crashing.
  */
-export const db = admin.firestore();
 
-// Set up specific collections for cleaner usage
+export const db = null;
+
 export const collections = {
-  guidanceCache: db.collection('guidanceCache'),
+  guidanceCache: null,
 };

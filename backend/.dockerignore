@@ -1,8 +1,10 @@
 node_modules
-npm-debug.log
-.git
-.gitignore
 .env
+logs
+dist
+.git
+npm-debug.log
+.gitignore
 coverage
 *.md
 .eslintrc*
