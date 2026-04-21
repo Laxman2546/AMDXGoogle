@@ -1,12 +1,17 @@
 import { GoogleGenAI } from '@google/genai';
 import config from '../../config/index.js';
 
-// Setup new Google Gen AI client with fallback for local instances
-const ai = new GoogleGenAI({
-  apiKey: process.env.GEMINI_API_KEY,
-  project: config.gcp.projectId || process.env.GOOGLE_CLOUD_PROJECT || 'local-dev-sandbox',
-  location: config.gcp.location || 'us-central1',
-});
+// Setup new Google Gen AI client evaluating the local credentials mapping
+const clientConfig = {};
+
+if (process.env.GEMINI_API_KEY) {
+  clientConfig.apiKey = process.env.GEMINI_API_KEY;
+} else {
+  clientConfig.project = config.gcp.projectId || process.env.GOOGLE_CLOUD_PROJECT || 'local-dev-sandbox';
+  clientConfig.location = config.gcp.location || 'us-central1';
+}
+
+const ai = new GoogleGenAI(clientConfig);
 
 /**
  * Polyfill bridging the new Gen AI SDK to the expected shape of the older SDK.

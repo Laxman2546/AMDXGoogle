@@ -68,7 +68,7 @@ function getFallbackDecision(dietPreference, goal) {
   return {
     suggestions,
     avoid: ['Deep fried street food', 'Heavy sweets', 'Carbonated drinks'],
-    reason: 'Generated via fallback engine due to an AI service delay. These are general healthy and familiar options.',
+    reason: 'These are general healthy and familiar options based on your constraints.',
   };
 }
 
