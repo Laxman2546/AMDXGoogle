@@ -1,0 +1,81 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-top: 1rem;
+  animation: slideUp 0.4s ease-out;
+}
+
+.mainTitle {
+  font-size: 1.5rem;
+  color: var(--color-primary);
+  margin-bottom: 0.25rem;
+}
+
+.regionalText {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+  margin-bottom: 1rem;
+}
+
+.separator {
+  margin: 0 0.5rem;
+  color: var(--color-border);
+}
+
+.resultCard {
+  border-left: 4px solid var(--color-success);
+}
+
+.dangerCard {
+  border-left: 4px solid var(--color-danger);
+}
+
+.tipsCard {
+  border-left: 4px solid var(--color-secondary);
+}
+
+.reasonCard {
+  background-color: rgba(255, 255, 255, 0.03);
+}
+
+.title {
+  margin-bottom: 1rem;
+  font-size: 1.125rem;
+}
+
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.listItem {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  color: var(--color-text-muted);
+}
+
+.icon {
+  margin-right: 0.75rem;
+  font-size: 1.25rem;
+}
+
+.reasonText {
+  color: var(--color-text-muted);
+  line-height: 1.6;
+}
+
+.disclaimer {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+  text-align: center;
+  margin-top: 1rem;
+  font-style: italic;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}

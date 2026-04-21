@@ -1,0 +1,65 @@
+:root {
+  /* Premium Dark Aesthetic Color Palette */
+  --color-bg: #0a0a0a;
+  --color-surface: #171717;
+  --color-surface-hover: #262626;
+  --color-border: #333333;
+  
+  --color-primary: #facc15; /* Vibrant yellow */
+  --color-primary-hover: #eab308;
+  --color-secondary: #3b82f6; /* Blue accent */
+
+  --color-text-main: #f5f5f5;
+  --color-text-muted: #a3a3a3;
+  --color-danger: #ef4444;
+  --color-success: #10b981;
+
+  --font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --transition: all 0.2s ease-in-out;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-family);
+  background-color: var(--color-bg);
+  color: var(--color-text-main);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Utilities for accessibility */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Typographic defaults */
+h1, h2, h3, h4 {
+  font-weight: 600;
+  line-height: 1.2;
+  margin-bottom: 0.5rem;
+}
+
+p {
+  margin-bottom: 1rem;
+}
